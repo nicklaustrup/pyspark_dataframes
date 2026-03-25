@@ -10,6 +10,7 @@ def main():
     # Step 1: Load and Explore Data
     # ----------------------------------- #
     print("-"*5, "Step 1", "-"*5)
+    
     # Load data
     df = spark.read.csv("people.csv", header=True, inferSchema=True)
     print("=" * 100)
@@ -28,7 +29,22 @@ def main():
     # ----------------------------------- #
     # Step 2: Filtering and Selecting Columns
     # ----------------------------------- #
-    print("-"*5, "Step 1", "-"*5)
+    print("-"*5, "Step 2", "-"*5)
+    
+    # DF with only people from new york
+    print("Filter only people from New York: ")
+    df_ny = df.filter(df["city"] == "New York")
+    df_ny.show()
+    
+    # Select only name and salary columns
+    print("Select only name and salary columns: ")
+    df_ny.select(df.name, df.salary).show()
+    
+    # Show how many people are from NY and what their avg salary is
+    print("Number of people from NY: ", df_ny.count())
+    print("Average salary from NY: ")
+    df_ny.agg({"salary": "avg"}).show()
+
     
     spark.stop()
 
